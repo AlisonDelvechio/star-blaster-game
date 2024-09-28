@@ -1,7 +1,8 @@
 import { 
     PATH_SPACESHIP_IMAGE, 
     PATH_ENGINE_IMAGE,
-    PATH_ENGINE_SPRITES
+    PATH_ENGINE_SPRITES,
+    INITIAL_FRAMES
 } from "../utils/constants.js";
 
 class Player {
@@ -19,6 +20,9 @@ class Player {
         this.image = this.getImage(PATH_SPACESHIP_IMAGE);
         this.engineImage = this.getImage(PATH_ENGINE_IMAGE);
         this.engineSprites = this.getImage(PATH_ENGINE_SPRITES);
+
+        this.sx = 0;
+        this.framesCounter = INITIAL_FRAMES;
     }
 
     getImage(path) {
@@ -36,21 +40,25 @@ class Player {
     }
 
     draw(ctx) {
-        // Sprites
-        ctx.drawImage(
-            this.engineSprites, 
-            this.position.x, 
-            this.position.y, 
-            this.width, 
-            this.height
-        );
-
         // Nave
         ctx.drawImage(
             this.image, 
             this.position.x, 
             this.position.y, 
             this.width, 
+            this.height
+        );
+
+        // Sprites de movimento
+        ctx.drawImage(
+            this.engineSprites, 
+            this.sx, 
+            0, 
+            48, 
+            48,
+            this.position.x,
+            this.position.y + 10,
+            this.width,
             this.height
         );
 
@@ -62,6 +70,19 @@ class Player {
             this.width, 
             this.height
         );
+
+        this.update();
+    }
+
+    // Animação do Sprite
+    update() {
+        if (this.framesCounter === 0) {
+            this.sx = this.sx === 96 ? 0 : this.sx + 48;
+            this.framesCounter = INITIAL_FRAMES;
+        }
+
+        // Diminui a velocidade dos frames de imagem
+        this.framesCounter--;
     }
 }
 

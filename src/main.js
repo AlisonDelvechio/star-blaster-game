@@ -1,4 +1,5 @@
 import Player from "./class/Player.js";
+import Projectile from "./class/Projectile.js";
 
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
@@ -6,11 +7,11 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-// Reduzo efeito de "esticar" a imagem
+// Remove o efeito de "esticar" a imagem
 ctx.imageSmoothingEnabled = false;
 
 const player = new Player(canvas.width, canvas.height);
-
+const p = new Projectile({ x: 300, y: 700}, 5);
 const keys = {
     left: false,
     right: false,
@@ -20,15 +21,34 @@ const keys = {
 const gameLoop = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    p.draw(ctx);
+
+    ctx.save();
+
+    ctx.translate(
+        player.position.x + player.width / 2, 
+        player.position.y + player.height / 2
+    );
+
     if (keys.left && player.position.x >= 0) {
         player.moveLeft();
+        ctx.rotate(-0.15);
     }
 
     if (keys.right && player.position.x <= canvas.width - player.width) {
         player.moveRight();
+        ctx.rotate(0.15);
     }
 
+    ctx.translate(
+        - player.position.x + - player.width / 2, 
+        - player.position.y + - player.height / 2
+    );
+
     player.draw(ctx);
+
+    ctx.restore();
+
     requestAnimationFrame(gameLoop);
 };
 
