@@ -16,7 +16,10 @@ class Projectile {
         );
     }
 
-
+    // Animação do Projetil
+    update() {
+        this.position.y += this.velocity;
+    }
 }
 
 

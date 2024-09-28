@@ -5,6 +5,8 @@ import {
     INITIAL_FRAMES
 } from "../utils/constants.js";
 
+import Projectile from "./Projectile.js";
+
 class Player {
     constructor(canvasWidth, canvasHeight) {
 
@@ -83,6 +85,15 @@ class Player {
 
         // Diminui a velocidade dos frames de imagem
         this.framesCounter--;
+    }
+
+    shoot(projectiles) {
+        const p = new Projectile({
+            x: this.position.x + this.width / 2,
+            y: this.position.y 
+        }, -10);
+
+        projectiles.push(p);
     }
 }
 
