@@ -17,6 +17,10 @@ class Obstacle {
     }
     
     hit(projectiles) {
+        const projectilePositionY = projectiles.velocity < 0 
+        ? projectiles.position.y 
+        : projectiles.position.y + projectiles.height;
+
         return (
             projectiles.position.x >= this.position.x &&
             projectiles.position.x <= this.position.x + this.width &&

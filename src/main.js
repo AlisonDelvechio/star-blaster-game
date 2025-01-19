@@ -142,6 +142,12 @@ const checkShootObstacles = ()=> {
                 playerProjectiles.splice(projectileIndex, 1);
             }
         });
+        
+        invadersProjectiles.some((projectile, projectileIndex) => {
+            if (obstacle.hit(projectile)) {
+                invadersProjectiles.splice(projectileIndex, 1);
+            }
+        });
     });
 }
 
@@ -194,7 +200,7 @@ const gameLoop = () => {
         checkShootObstacles();
     
         grid.draw(ctx);
-        // grid.update(player.alive);
+        grid.update(player.alive);
     
         ctx.save();
     
@@ -231,8 +237,11 @@ const gameLoop = () => {
     }
 
     if (currentState === GameState.GAME_OVER) {
+        checkShootObstacles();
+        
         drawParticles();
         drawProjectiles();
+        drawObstacles();
 
         clearParticles();
         clearProjectiles();
@@ -270,12 +279,12 @@ addEventListener("keyup", ()=> {
     }
 });
 
-// setInterval(() => {
-//     const invader = grid.getRandomInvader();
+setInterval(() => {
+    const invader = grid.getRandomInvader();
 
-//     if (invader) {
-//         invader.shoot(invadersProjectiles);
-//     }
-// }, 1000)
+    if (invader) {
+        invader.shoot(invadersProjectiles);
+    }
+}, 1000)
 
 gameLoop();
