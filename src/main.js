@@ -1,3 +1,4 @@
+import Invader from "./class/Invader.js";
 import Player from "./class/Player.js";
 import Projectile from "./class/Projectile.js";
 
@@ -41,7 +42,6 @@ const clearProjectiles = ()=> {
 // Loop de gameplay que atualiza informações em tempo real
 const gameLoop = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    console.log(playerProjectiles);
 
     drawProjectiles();
     clearProjectiles();
