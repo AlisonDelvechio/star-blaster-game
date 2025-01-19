@@ -8,7 +8,7 @@ class Grid {
         this.direction = "right"
         this.moveDown = false;
 
-        this.invadersVelocity = 2;
+        this.invadersVelocity = 1;
         this.invaders = this.init();
     }
 
@@ -48,6 +48,8 @@ class Grid {
         this.invaders.forEach(invader => {
             if (this.moveDown) {
                 invader.moveDown();
+                invader.incrementVelocity(0.1);
+                this.invadersVelocity = invader.velocity;
             }
 
             if (this.direction === "right") {
