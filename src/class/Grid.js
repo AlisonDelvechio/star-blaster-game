@@ -69,6 +69,11 @@ class Grid {
     reacedLeftBorder() {
         return this.invaders.some((invader) => invader.position.x <= 0)
     }
+
+    getRandomInvader() {
+        const randomIndex = Math.floor(Math.random() * this.invaders.length);
+        return this.invaders[randomIndex];
+    }
 }
 
 export default Grid;
