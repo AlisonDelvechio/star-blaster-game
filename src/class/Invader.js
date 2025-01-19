@@ -52,6 +52,27 @@ class Invader {
 
         projectiles.push(p);
     }
+
+    hit(projectiles) {
+        // projectiles.forEach((projectile, index) => {
+        //     if (projectile.position.x >= this.position.x &&
+        //         projectile.position.x <= this.position.x + this.width &&
+        //         projectile.position.y >= this.position.y &&
+        //         projectile.position.y <= this.position.y + this.height) {
+        //         projectiles.splice(index, 1);
+        //         return true;
+        //     }
+        // });
+
+        // return false;
+
+        return (
+            projectiles.position.x >= this.position.x &&
+            projectiles.position.x <= this.position.x + this.width &&
+            projectiles.position.y >= this.position.y &&
+            projectiles.position.y <= this.position.y + this.height
+        );
+    }
 }
 
 export default Invader;

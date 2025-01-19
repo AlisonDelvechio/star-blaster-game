@@ -45,15 +45,28 @@ const clearProjectiles = ()=> {
     });
 }
 
+const checkShootInvaders = ()=> {
+    grid.invaders.forEach((invader, invaderIndex) => {
+        playerProjectiles.some((projectile, projectileIndex) => {
+            if (invader.hit(projectile)) {
+                grid.invaders.splice(invaderIndex, 1);
+                playerProjectiles.splice(projectileIndex, 1);
+            }
+        });
+    });
+};
+
 // Loop de gameplay que atualiza informações em tempo real
 const gameLoop = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     drawProjectiles();
     clearProjectiles();
+    checkShootInvaders();
 
     grid.draw(ctx);
-    grid.update();
+    // grid.update();
+
 
     ctx.save();
 
@@ -118,12 +131,12 @@ addEventListener("keyup", ()=> {
     }
 });
 
-setInterval(() => {
-    const invader = grid.getRandomInvader();
+// setInterval(() => {
+//     const invader = grid.getRandomInvader();
 
-    if (invader) {
-        invader.shoot(invadersProjectiles);
-    }
-}, 1000)
+//     if (invader) {
+//         invader.shoot(invadersProjectiles);
+//     }
+// }, 1000)
 
 gameLoop();
