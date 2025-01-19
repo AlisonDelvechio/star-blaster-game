@@ -95,6 +95,15 @@ class Player {
 
         projectiles.push(p);
     }
+    
+    hit(projectiles) {
+        return (
+            projectiles.position.x >= this.position.x + 20 &&
+            projectiles.position.x <= this.position.x + 20 + this.width - 38 &&
+            projectiles.position.y >= this.position.y + 22 &&
+            projectiles.position.y <= this.position.y + 22 + this.height - 34
+        );
+    }
 }
 
 export default Player;
