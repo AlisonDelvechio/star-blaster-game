@@ -5,7 +5,10 @@ class Grid {
         this.rows = rows;
         this.cols = cols;
 
-        this.invadersVelocity = 1;
+        this.direction = "right"
+        this.moveDown = false;
+
+        this.invadersVelocity = 2;
         this.invaders = this.init();
     }
 
@@ -16,8 +19,9 @@ class Grid {
             
             for (let col = 0; col < this.cols; col+= 1) {
                 const invader = new Invader({
-                    x: col,
-                    y: row
+                    x: col * 50 + 20,
+                    y: row * 40 + 20
+
                 }, this.invadersVelocity);
                 
                 array.push(invader);
@@ -25,6 +29,43 @@ class Grid {
         }
 
         return array;
+    }
+
+    draw(ctx) {
+        this.invaders.forEach(invader => invader.draw(ctx));
+    }
+
+    update() {
+        if (this.reachedRightBorder()) {
+            this.direction = "left";
+            this.moveDown = true;
+
+        } else if (this.reacedLeftBorder()) {
+            this.direction = "right";
+            this.moveDown = true;
+        }
+        
+        this.invaders.forEach(invader => {
+            if (this.moveDown) {
+                invader.moveDown();
+            }
+
+            if (this.direction === "right") {
+                invader.moveRight();
+            } else {
+                invader.moveLeft();
+            }
+        });
+
+        this.moveDown = false;
+    }
+
+    reachedRightBorder() {
+        return this.invaders.some((invader) => invader.position.x + invader.width >= innerWidth)
+    }
+
+    reacedLeftBorder() {
+        return this.invaders.some((invader) => invader.position.x <= 0)
     }
 }
 
