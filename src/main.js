@@ -346,24 +346,19 @@ buttonRestart.addEventListener("click", ()=> {
 });
 
 buttonSelect.addEventListener("click", () => {
-    if (selectedSpaceship) {
-        player = new Player(canvas.width, canvas.height, selectedSpaceship);
+    player = new Player(canvas.width, canvas.height, selectedSpaceship);
 
-        selectScreen.remove();
-        scoreUi.style.display = "block";
-        currentState = GameState.PLAYING;
+    selectScreen.remove();
+    scoreUi.style.display = "block";
+    currentState = GameState.PLAYING;
 
-        setInterval(() => {
-            const invader = grid.getRandomInvader();
+    setInterval(() => {
+        const invader = grid.getRandomInvader();
 
-            if (invader) {
-                invader.shoot(invadersProjectiles);
-            }
-        }, 1000);
-    } else {
-        alert("Por favor, selecione uma nave antes de continuar!");
-    }
-    console.log(selectedSpaceship);
+        if (invader) {
+            invader.shoot(invadersProjectiles);
+        }
+    }, 1000);
 });
 
 spaceships.forEach(spaceship => {
