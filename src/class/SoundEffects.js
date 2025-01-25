@@ -46,7 +46,7 @@ class SoundEffects {
     }
 
     adjustVolume() {
-        this.shootSounds.forEach(sound => sound.volume = 0.2);
+        this.shootSounds.forEach(sound => sound.volume = 0.3);
         this.hitSounds.forEach(sound => sound.volume = 0.5);
         this.explosionSounds.volume = 0.2;
         this.nextLevelSound.volume = 0.4;

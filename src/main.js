@@ -2,7 +2,10 @@ import Grid from "./class/Grid.js";
 import Obstacle from "./class/Obstacle.js";
 import Particle from "./class/Particle.js";
 import Player from "./class/Player.js";
+import SoundEffects from "./class/SoundEffects.js";
 import { GameState } from "./utils/constants.js";
+
+const soundEffects = new SoundEffects
 
 const startScreen = document.querySelector(".start-screen");           // Tela de Inicio
 const gameOverScreen = document.querySelector(".game-over");           // Tela de Game Over
@@ -137,6 +140,7 @@ const checkShootInvaders = ()=> {
     grid.invaders.forEach((invader, invaderIndex) => {
         playerProjectiles.some((projectile, projectileIndex) => {
             if (invader.hit(projectile)) {
+                soundEffects.playHitSound();
                 createExplosion(
                     { 
                         x: invader.position.x + invader.width / 2, 
@@ -160,6 +164,7 @@ const checkShootInvaders = ()=> {
 const checkShootPlayer = ()=> {
     invadersProjectiles.some((projectile, projectileIndex) => {
         if (player.hit(projectile)) {
+            soundEffects.playExplosionSound();
             invadersProjectiles.splice(projectileIndex, 1);
             gameOver();
         }
@@ -185,6 +190,7 @@ const checkShootObstacles = ()=> {
 
 const spawnGrid = ()=> {
     if (grid.invaders.length === 0) {
+        soundEffects.playNextLevelSound();
         grid.rows = Math.round(Math.random() * 9 + 1);
         grid.cols = Math.round(Math.random() * 9 + 1);
         grid.restart();
@@ -246,6 +252,7 @@ const gameLoop = () => {
     
         // Dispara o Projetil apenas ao apertar e soltar a tecla
         if (keys.shoot.pressed && keys.shoot.released) {
+            soundEffects.playShootSound();
             player.shoot(playerProjectiles);
             keys.shoot.released = false;
         }
