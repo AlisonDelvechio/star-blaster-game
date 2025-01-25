@@ -1,10 +1,19 @@
 import Grid from "./class/Grid.js";
-import Invader from "./class/Invader.js";
 import Obstacle from "./class/Obstacle.js";
 import Particle from "./class/Particle.js";
 import Player from "./class/Player.js";
-import Projectile from "./class/Projectile.js";
 import { GameState } from "./utils/constants.js";
+
+const startScreen = document.querySelector(".start-screen");           // Tela de Inicio
+const gameOverScreen = document.querySelector(".game-over");           // Tela de Game Over
+const scoreUi = document.querySelector(".score-ui");                   // Score do Jogador
+const scoreElement = scoreUi.querySelector(".score > span");           // Elemento do Score
+const levelElement = scoreUi.querySelector(".level > span");           // Elemento do Level
+const highElement = scoreUi.querySelector(".high > span");             // Elemento do High Score
+const buttonPlay = startScreen.querySelector(".button-play");          // Botão de Iniciar o Jogo
+const buttonRestart = gameOverScreen.querySelector(".button-restart"); // Botão de Reiniciar o Jogo
+
+gameOverScreen.remove();
 
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
@@ -15,7 +24,19 @@ canvas.height = window.innerHeight;
 // Remove o efeito de "esticar" a imagem
 ctx.imageSmoothingEnabled = false;
 
-let currentState = GameState.PLAYING;
+let currentState = GameState.START;
+
+const gameData = {
+    score: 0,
+    level: 1,
+    highScore: 0
+}
+
+const showGameData = ()=> {
+    scoreElement.textContent = gameData.score;
+    levelElement.textContent = gameData.level;
+    highElement.textContent = gameData.highScore;
+}
 
 const player = new Player(canvas.width, canvas.height);
 const playerProjectiles = [];
@@ -49,6 +70,14 @@ const keys = {
         released: true
     }
 };
+
+const incrementScore = (value)=> {
+    gameData.score += value;
+
+    if (gameData.score > gameData.highScore) {
+        gameData.highScore = gameData.score;
+    }
+}
 
 const drawProjectiles = ()=> {
     const projectiles = [...playerProjectiles, ...invadersProjectiles];
@@ -117,6 +146,9 @@ const checkShootInvaders = ()=> {
                     "#941CFF"
                 );
 
+                // Incrementa o Score do Jogador
+                incrementScore(10);
+
                 grid.invaders.splice(invaderIndex, 1);
                 playerProjectiles.splice(projectileIndex, 1);
             }
@@ -156,6 +188,7 @@ const spawnGrid = ()=> {
         grid.rows = Math.round(Math.random() * 9 + 1);
         grid.cols = Math.round(Math.random() * 9 + 1);
         grid.restart();
+        gameData.level += 1;
     }
 }
 
@@ -179,6 +212,7 @@ const gameOver = ()=> {
 
     currentState = GameState.GAME_OVER;
     player.alive = false;
+    document.body.appendChild(gameOverScreen);
 }
 
 // Loop de gameplay que atualiza informações em tempo real
@@ -186,6 +220,7 @@ const gameLoop = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (currentState === GameState.PLAYING) {
+        showGameData();
         spawnGrid();
 
         drawProjectiles();
@@ -279,12 +314,33 @@ addEventListener("keyup", ()=> {
     }
 });
 
-setInterval(() => {
-    const invader = grid.getRandomInvader();
+buttonPlay.addEventListener("click", ()=> {
+    startScreen.remove();
+    scoreUi.style.display = "block";
+    currentState = GameState.PLAYING;
 
-    if (invader) {
-        invader.shoot(invadersProjectiles);
-    }
-}, 1000)
+    setInterval(() => {
+        const invader = grid.getRandomInvader();
+
+        if (invader) {
+            invader.shoot(invadersProjectiles);
+        }
+    }, 1000);
+});
+
+buttonRestart.addEventListener("click", ()=> {
+    currentState = GameState.PLAYING;
+    player.alive = true;
+
+    grid.invaders.length = 0;
+    grid.invadersVelocity = 1;
+
+    invadersProjectiles.length = 0;
+
+    gameData.score = 0;
+    gameData.level = 0;
+
+    gameOverScreen.remove();
+});
 
 gameLoop();
