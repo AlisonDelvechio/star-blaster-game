@@ -365,7 +365,9 @@ spaceships.forEach(spaceship => {
     spaceship.addEventListener("click", () => {
         spaceships.forEach(s => s.classList.remove("selected"));
         spaceship.classList.add("selected");
+
         selectedSpaceship = spaceship.querySelector("img").getAttribute("src");
+        selectedSpaceship = selectedSpaceship.replace(window.location.origin + '/', '');
     });
 });
 
