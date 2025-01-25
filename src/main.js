@@ -7,14 +7,18 @@ import { GameState } from "./utils/constants.js";
 
 const soundEffects = new SoundEffects
 
-const startScreen = document.querySelector(".start-screen");           // Tela de Inicio
-const gameOverScreen = document.querySelector(".game-over");           // Tela de Game Over
-const scoreUi = document.querySelector(".score-ui");                   // Score do Jogador
-const scoreElement = scoreUi.querySelector(".score > span");           // Elemento do Score
-const levelElement = scoreUi.querySelector(".level > span");           // Elemento do Level
-const highElement = scoreUi.querySelector(".high > span");             // Elemento do High Score
-const buttonPlay = startScreen.querySelector(".button-play");          // Botão de Iniciar o Jogo
-const buttonRestart = gameOverScreen.querySelector(".button-restart"); // Botão de Reiniciar o Jogo
+const startScreen = document.querySelector(".start-screen");             // Tela de Inicio
+const gameOverScreen = document.querySelector(".game-over");             // Tela de Game Over
+const scoreUi = document.querySelector(".score-ui");                     // Score do Jogador
+const scoreElement = scoreUi.querySelector(".score > span");             // Elemento do Score
+const levelElement = scoreUi.querySelector(".level > span");             // Elemento do Level
+const highElement = scoreUi.querySelector(".high > span");               // Elemento do High Score
+const buttonPlay = startScreen.querySelector(".button-play");            // Botão de Iniciar o Jogo
+const buttonRestart = gameOverScreen.querySelector(".button-restart");   // Botão de Reiniciar o Jogo
+const selectScreen = document.querySelector(".select-spaceship");        // Tela de Seleção
+const spaceships = document.querySelectorAll(".spaceship");              // Naves
+const buttonSelect = document.querySelector(".button-select");           // Botão de Seleção
+let selectedSpaceship = "src/assets/images/spaceship.png";               // Nave Selecionada
 
 gameOverScreen.remove();
 
@@ -41,7 +45,7 @@ const showGameData = ()=> {
     highElement.textContent = gameData.highScore;
 }
 
-const player = new Player(canvas.width, canvas.height);
+let player = new Player(canvas.width, canvas.height, selectedSpaceship);
 const playerProjectiles = [];
 
 const grid = new Grid(3, 6);
@@ -323,16 +327,7 @@ addEventListener("keyup", ()=> {
 
 buttonPlay.addEventListener("click", ()=> {
     startScreen.remove();
-    scoreUi.style.display = "block";
-    currentState = GameState.PLAYING;
-
-    setInterval(() => {
-        const invader = grid.getRandomInvader();
-
-        if (invader) {
-            invader.shoot(invadersProjectiles);
-        }
-    }, 1000);
+    selectScreen.style.display = "flex";
 });
 
 buttonRestart.addEventListener("click", ()=> {
@@ -348,6 +343,35 @@ buttonRestart.addEventListener("click", ()=> {
     gameData.level = 0;
 
     gameOverScreen.remove();
+});
+
+buttonSelect.addEventListener("click", () => {
+    if (selectedSpaceship) {
+        player = new Player(canvas.width, canvas.height, selectedSpaceship);
+
+        selectScreen.remove();
+        scoreUi.style.display = "block";
+        currentState = GameState.PLAYING;
+
+        setInterval(() => {
+            const invader = grid.getRandomInvader();
+
+            if (invader) {
+                invader.shoot(invadersProjectiles);
+            }
+        }, 1000);
+    } else {
+        alert("Por favor, selecione uma nave antes de continuar!");
+    }
+    console.log(selectedSpaceship);
+});
+
+spaceships.forEach(spaceship => {
+    spaceship.addEventListener("click", () => {
+        spaceships.forEach(s => s.classList.remove("selected"));
+        spaceship.classList.add("selected");
+        selectedSpaceship = spaceship.querySelector("img").src.replace(window.location.origin + "/", "");
+    });
 });
 
 gameLoop();

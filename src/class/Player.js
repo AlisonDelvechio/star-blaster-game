@@ -1,5 +1,4 @@
 import { 
-    PATH_SPACESHIP_IMAGE, 
     PATH_ENGINE_IMAGE,
     PATH_ENGINE_SPRITES,
     INITIAL_FRAMES
@@ -8,7 +7,7 @@ import {
 import Projectile from "./Projectile.js";
 
 class Player {
-    constructor(canvasWidth, canvasHeight) {
+    constructor(canvasWidth, canvasHeight, spaceshipImage) {
         this.alive = true;
         this.width = 48 * 2;
         this.height = 48 * 2;
@@ -19,7 +18,7 @@ class Player {
             y: canvasHeight - this.height - 30,
         }
 
-        this.image = this.getImage(PATH_SPACESHIP_IMAGE);
+        this.image = this.getImage(spaceshipImage);
         this.engineImage = this.getImage(PATH_ENGINE_IMAGE);
         this.engineSprites = this.getImage(PATH_ENGINE_SPRITES);
 

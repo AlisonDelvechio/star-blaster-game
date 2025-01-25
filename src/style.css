@@ -31,7 +31,7 @@ canvas {
     margin-bottom: 1rem;
 }
 
-.screen span {
+.screen .credits {
     font-size: 0.6rem;
     color: #AAA;
     margin-bottom: 1rem;
@@ -39,12 +39,71 @@ canvas {
     text-decoration: underline;
 }
 
-.start-screen > div {
+.screen .credits a {
+    color: #AAA;
+    text-decoration: underline;
+}
+
+.start-screen .start {
     margin-top: auto;
 }
 
+.instructions {
+    max-width: 600px;
+    margin-top: 10rem;
+    font-size: 0.8rem;
+    line-height: 2;
+}
+
+.instructions h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* -------------------- Spaceship -------------------- */
+.select-spaceship {
+    display: none;
+}
+
+.spaceship-list {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.spaceship {
+    border: 2px solid #fff;
+    padding: 15px;
+    margin: 1rem;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    cursor: pointer;
+}
+
+.spaceship:hover {
+    border-color: #00f829;
+}
+
+.spaceship.selected {
+    border-color: #00f829;
+}
+
+.spaceship button {
+    margin-top: 1rem;
+    padding: 5px;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    background: transparent;
+    color: #FFF;
+    cursor: pointer;
+    transition: ease-out 0.4s;
+    font-size: 0.5rem;
+}
+
 /* -------------------- Buttons -------------------- */
-.button-play, .button-restart {
+.button-play, .button-restart, .button-select {
     font-size: 1rem;
     padding: 12px 36px;
     margin: 20px auto 0;
@@ -58,7 +117,7 @@ canvas {
     transition: ease-out 0.4s;
 }
 
-.button-play:hover, .button-restart:hover {
+.button-play:hover, .button-restart:hover, .button-select:hover {
     box-shadow: inset 400px 0 0 0 #fff; 
     color: #121212; 
 }
@@ -79,7 +138,7 @@ canvas {
     }
 }
 
-/* -------------------- Screen -------------------- */
+/* -------------------- Score -------------------- */
 .score-ui {
     position: fixed;
     top: 0;
